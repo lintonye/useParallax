@@ -1,0 +1,28 @@
+{
+  "name": "use-parallax",
+  "version": "0.0.1",
+  "description": "React Hooks to support scroll interactions along based on the Framer Motion library",
+  "main": "src/index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/lintonye/useParallax.git"
+  },
+  "keywords": [
+    "framer",
+    "react",
+    "hooks",
+    "scroll"
+  ],
+  "author": "Linton Ye <linton@jimulabs.com> (https://learnreact.design)",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/lintonye/useParallax/issues"
+  },
+  "homepage": "https://github.com/lintonye/useParallax#readme",
+  "dependencies": {
+    "framer-motion": "^1.6.2"
+  }
+}
