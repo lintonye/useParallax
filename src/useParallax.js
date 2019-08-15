@@ -19,11 +19,11 @@ export function useSpeed(positiveOffset, ...rangeSpeedPairs) {
 export function useSticky(positiveOffset, ...ranges) {
   return useSpeed(
     positiveOffset,
-    ...shallowFlattern(ranges.map(range => [range, -1]))
+    ...shallowFlatten(ranges.map(range => [range, -1]))
   )
 }
 
-function shallowFlattern(array) {
+function shallowFlatten(array) {
   return array.reduce((r, innerArray) => [...r, ...innerArray], [])
 }
 
