@@ -1,10 +1,12 @@
 {
   "name": "use-parallax",
-  "version": "0.0.1",
+  "version": "0.0.3",
   "description": "React Hooks to support scroll interactions along based on the Framer Motion library",
-  "main": "src/index.js",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "tsc"
   },
   "repository": {
     "type": "git",
@@ -23,6 +25,14 @@
   },
   "homepage": "https://github.com/lintonye/useParallax#readme",
   "dependencies": {
+    "@types/react": "^16.9.2",
     "framer-motion": "^1.6.2"
+  },
+  "devDependencies": {
+    "typescript": "^3.5.3"
+  },
+  "peerDependencies": {
+    "react": "^16.9.0",
+    "react-dom": "^16.9.0"
   }
 }
