@@ -1,4 +1,4 @@
-import { useTransform } from "framer"
+import { useTransform } from "framer-motion"
 import * as React from "react"
 
 const speed = s => v => -v * s
