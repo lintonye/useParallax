@@ -1,22 +1,29 @@
-import { useTransform } from "framer-motion"
+import { useTransform, MotionValue } from "framer-motion"
 import * as React from "react"
 
 const speed = s => v => -v * s
 
 // const sticky = () => speed(-1)
 
-export function usePositiveOffset(offset) {
+export function usePositiveOffset(offset: MotionValue) {
   return useTransform(offset, v => -v)
 }
 
-export function useSpeed(positiveOffset, ...rangeSpeedPairs) {
+type Range = number[]
+
+type RangeSpeedPair = Range | number
+
+export function useSpeed(
+  positiveOffset: MotionValue,
+  ...rangeSpeedPairs: RangeSpeedPair[]
+) {
   return useParallax(
     positiveOffset,
     ...rangeSpeedPairs.map(v => (typeof v === "number" ? speed(v) : v))
   )
 }
 
-export function useSticky(positiveOffset, ...ranges) {
+export function useSticky(positiveOffset: MotionValue, ...ranges: Range[]) {
   return useSpeed(
     positiveOffset,
     ...shallowFlatten(ranges.map(range => [range, -1]))
@@ -53,7 +60,7 @@ function preprocessRangeFun(rangeFunPairs) {
   return result
 }
 
-export function useParallax(positiveOffset, ...rangeFunPairs) {
+export function useParallax(positiveOffset: MotionValue, ...rangeFunPairs) {
   const processedRangeFunPairs = preprocessRangeFun(rangeFunPairs)
   const getRange = index =>
     processedRangeFunPairs[index] && processedRangeFunPairs[index][0]
@@ -81,7 +88,13 @@ export function useParallax(positiveOffset, ...rangeFunPairs) {
   })
 }
 
-export function useTrigger(positiveOffset, range, actionFun) {
+type TriggerCallback = (direction: number) => void
+
+export function useTrigger(
+  positiveOffset: MotionValue,
+  range: Range,
+  actionFun: TriggerCallback
+) {
   React.useEffect(() => {
     let lastV = 0,
       lastDirection = 0
