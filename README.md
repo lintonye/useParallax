@@ -3,10 +3,10 @@ Functions `usePositiveOffset`, `useSticky`, `useSpeed` and `useTrigger` are cust
 
 ## `usePositiveOffset`
 
-**Description**
+### Description
 Convert a negative offset `MotionValue`, that comes with `contentOffsetX`  and `contentOffsetY` props of `Scroll`, to a positive one.
 
-**Usage**
+### Usage
 
 ```jsx
     // ==> 1. import it
@@ -21,10 +21,10 @@ Convert a negative offset `MotionValue`, that comes with `contentOffsetX`  and `
 
 ## `useSticky`
 
-**Description**
+### Description
 Returns a `MotionValue` which can be used to make an item sticky when the `Scroll` is scrolled into specific ranges.
 
-**Usage**
+### Usage
 
 ```jsx
     // ==> 1. import it
@@ -51,10 +51,10 @@ In the code above, the title will be sticky when the list is scrolled into three
 
 ## `useSpeed`
 
-**Description**
+### Description
 Returns a `MotionValue` which can be used to make an item move at a different speed when the `Scroll` is scrolled into specified ranges.
 
-**Usage**
+### Usage
 
 ```jsx
     // ==> 1. import it
@@ -86,10 +86,10 @@ Returns a `MotionValue` which can be used to make an item move at a different sp
 
 ## `useTrigger`
 
-**Description**
+### Description
 Trigger something, e.g. an animation, when scrolling into the specified range
 
-**Usage**
+### Usage
 
 ```jsx
     // ==> 1. import it
