@@ -5,7 +5,9 @@ const speed = s => v => -v * s
 
 // const sticky = () => speed(-1)
 
-export function usePositiveOffset(offset: MotionValue) {
+export function usePositiveOffset(
+  offset: MotionValue<number>
+): MotionValue<number> {
   return useTransform(offset, v => -v)
 }
 
@@ -14,16 +16,19 @@ type Range = number[]
 type RangeSpeedPair = Range | number
 
 export function useSpeed(
-  positiveOffset: MotionValue,
+  positiveOffset: MotionValue<number>,
   ...rangeSpeedPairs: RangeSpeedPair[]
-) {
+): MotionValue<number> {
   return useParallax(
     positiveOffset,
     ...rangeSpeedPairs.map(v => (typeof v === "number" ? speed(v) : v))
   )
 }
 
-export function useSticky(positiveOffset: MotionValue, ...ranges: Range[]) {
+export function useSticky(
+  positiveOffset: MotionValue<number>,
+  ...ranges: Range[]
+): MotionValue<number> {
   return useSpeed(
     positiveOffset,
     ...shallowFlatten(ranges.map(range => [range, -1]))
