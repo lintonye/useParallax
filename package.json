@@ -1,6 +1,6 @@
 {
   "name": "use-parallax",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "description": "React Hooks to support scroll interactions along based on the Framer Motion library",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
