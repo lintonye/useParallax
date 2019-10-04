@@ -65,7 +65,10 @@ function preprocessRangeFun(rangeFunPairs) {
   return result
 }
 
-export function useParallax(positiveOffset: MotionValue, ...rangeFunPairs) {
+export function useParallax(
+  positiveOffset: MotionValue<number>,
+  ...rangeFunPairs
+) {
   const processedRangeFunPairs = preprocessRangeFun(rangeFunPairs)
   const getRange = index =>
     processedRangeFunPairs[index] && processedRangeFunPairs[index][0]
@@ -96,7 +99,7 @@ export function useParallax(positiveOffset: MotionValue, ...rangeFunPairs) {
 type TriggerCallback = (direction: number) => void
 
 export function useTrigger(
-  positiveOffset: MotionValue,
+  positiveOffset: MotionValue<number>,
   range: Range,
   actionFun: TriggerCallback
 ) {
