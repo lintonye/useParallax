@@ -114,3 +114,19 @@ Trigger something, e.g. an animation, when scrolling into the specified range
     }
 ```
 
+## Special values
+In ranges, the following special values are supported:
+
+- `vh`: Viewport height, e.g. `'100vh'` means 100% of viewport height
+- `vw`: Viewport height, e.g. `'50vw'` means 50% of viewport height
+
+```jsx
+const titleOffset = useSticky(positiveOffset, [0, '50vh'], ['60vh', 2000])
+```
+
+## `useSpecialValueRange`
+A hook that converts a range with special values into pixels.
+
+```jsx
+const opacity = useTransform(useSpecialValueRange(['10vh', '50vh']), [0, 1])
+```
