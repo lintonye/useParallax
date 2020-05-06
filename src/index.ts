@@ -1,1 +1,2 @@
-export * from "./useParallax"
+export * from "./useParallax";
+export * from "./types";
