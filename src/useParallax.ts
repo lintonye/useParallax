@@ -11,7 +11,7 @@ export function usePositiveOffset(
   return useTransform(offset, (v) => -v);
 }
 
-type Range = number[];
+type Range = (number | string)[];
 
 type RangeSpeedPair = Range | number;
 
@@ -118,4 +118,54 @@ export function useTrigger(
     });
     return sub;
   });
+}
+
+export function useWindowSize() {
+  const [width, setWidth] = React.useState(window.innerWidth);
+  const [height, setHeight] = React.useState(window.innerHeight);
+  React.useEffect(() => {
+    const handleResize = (e) => {
+      setWidth(window.innerWidth);
+      setHeight(window.innerHeight);
+    };
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
+  return { width, height };
+}
+
+/**
+ *
+ * 90vw => 0.9 * vw, otherwise return the original value
+ *
+ * @param windowSize
+ * @param value
+ */
+function viewportValueToPixel(windowSize, value: string | number) {
+  const { width: vw, height: vh } = windowSize;
+  if (typeof value === "string") {
+    const pattern = /^(\d+)(vw|vh)$/;
+    const match = value.match(pattern);
+    if (match) {
+      return Math.round(
+        (Number.parseInt(match[1]) / 100) * (match[2] === "vw" ? vw : vh)
+      );
+    }
+  }
+  return value;
+}
+
+function viewportRangeToPixel(windowSize, range: Range) {
+  return range.map((v) => viewportValueToPixel(windowSize, v));
+}
+
+/**
+ *
+ * @param ranges
+ *
+ * E.g. [100, '90vw'], ['100vh', 80] ==> [100, 0.9*vw], [vh, 80]
+ */
+export function useViewportRanges(...ranges: Range[]) {
+  const size = useWindowSize();
+  return ranges.map((range) => viewportRangeToPixel(size, range));
 }
