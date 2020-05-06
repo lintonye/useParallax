@@ -1,5 +1,7 @@
 import { useTransform, MotionValue } from "framer-motion";
 import * as React from "react";
+import { Range, RangeSpeedPair } from "./types";
+import { specialValueRangeToPixels } from "./specialValues";
 
 const speed = (s) => (v) => -v * s;
 
@@ -10,12 +12,6 @@ export function usePositiveOffset(
 ): MotionValue<number> {
   return useTransform(offset, (v) => -v);
 }
-
-type Range = (number | string)[];
-
-type Size = { width: number; height: number };
-
-type RangeSpeedPair = Range | number;
 
 export function useSpeed(
   positiveOffset: MotionValue<number>,
@@ -138,38 +134,6 @@ export function useWindowSize() {
     return () => window.removeEventListener("resize", handleResize);
   }, []);
   return { width, height };
-}
-
-/**
- *
- * 200 => 200, "90vw" => 0.9 * vw, otherwise return the original value
- *
- * @param windowSize
- * @param value
- */
-function viewportValueToPixels(
-  { width: vw, height: vh },
-  value: string | number
-) {
-  if (typeof value === "string") {
-    const pattern = /^(\d+)(vw|vh)$/;
-    const match = value.match(pattern);
-    if (match) {
-      return Math.round(
-        (Number.parseInt(match[1]) / 100) * (match[2] === "vw" ? vw : vh)
-      );
-    }
-  }
-  return value;
-}
-
-function specialValueToPixels(windowSize, value: string | number) {
-  const converted = viewportValueToPixels(windowSize, value);
-  return typeof converted === "number" ? converted : 0;
-}
-
-function specialValueRangeToPixels(windowSize: Size, range: Range) {
-  return range.map((v) => specialValueToPixels(windowSize, v));
 }
 
 /**
