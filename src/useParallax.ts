@@ -13,6 +13,8 @@ export function usePositiveOffset(
 
 type Range = (number | string)[];
 
+type Size = { width: number; height: number };
+
 type RangeSpeedPair = Range | number;
 
 export function useSpeed(
@@ -72,8 +74,8 @@ export function useParallax(
   const windowSize = useWindowSize();
   const processedRangeFunPairs = preprocessRangeFun(rangeFunPairs);
   const getRange = (index) =>
-    viewportRangeToPixels(
-      window,
+    specialValueRangeToPixels(
+      windowSize,
       processedRangeFunPairs[index] && processedRangeFunPairs[index][0]
     );
   const getFun = (index) =>
@@ -140,13 +142,15 @@ export function useWindowSize() {
 
 /**
  *
- * 200 => 200, "90vw" => 0.9 * vw, otherwise return 0
+ * 200 => 200, "90vw" => 0.9 * vw, otherwise return the original value
  *
  * @param windowSize
  * @param value
  */
-function viewportValueToPixels(windowSize, value: string | number) {
-  const { width: vw, height: vh } = windowSize;
+function viewportValueToPixels(
+  { width: vw, height: vh },
+  value: string | number
+) {
   if (typeof value === "string") {
     const pattern = /^(\d+)(vw|vh)$/;
     const match = value.match(pattern);
@@ -156,11 +160,16 @@ function viewportValueToPixels(windowSize, value: string | number) {
       );
     }
   }
-  return typeof value === "number" ? value : 0;
+  return value;
 }
 
-function viewportRangeToPixels(windowSize, range: Range) {
-  return range.map((v) => viewportValueToPixels(windowSize, v));
+function specialValueToPixels(windowSize, value: string | number) {
+  const converted = viewportValueToPixels(windowSize, value);
+  return typeof converted === "number" ? converted : 0;
+}
+
+function specialValueRangeToPixels(windowSize: Size, range: Range) {
+  return range.map((v) => specialValueToPixels(windowSize, v));
 }
 
 /**
@@ -170,9 +179,9 @@ function viewportRangeToPixels(windowSize, range: Range) {
  * E.g. [100, '90vw'], ['100vh', 80] ==> [100, 0.9*vw], [vh, 80]
  *
  */
-export function useViewportRanges(...ranges: Range[]) {
+export function useSpecialValueRanges(...ranges: Range[]) {
   const size = useWindowSize();
-  return ranges.map((range) => viewportRangeToPixels(size, range));
+  return ranges.map((range) => specialValueRangeToPixels(size, range));
 }
 
 /**
@@ -181,8 +190,8 @@ export function useViewportRanges(...ranges: Range[]) {
  *
  * Usage:
  *
- *  const opacity = useTransform(useViewportRange(['100vh', '120vh'])), [0, 1])
+ *  const opacity = useTransform(useSpecialValueRange(['100vh', '120vh'])), [0, 1])
  */
-export function useViewportRange(range: Range) {
-  return useViewportRanges(range)[0];
+export function useSpecialValueRange(range: Range) {
+  return useSpecialValueRanges(range)[0];
 }
