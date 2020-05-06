@@ -69,9 +69,13 @@ export function useParallax(
   positiveOffset: MotionValue<number>,
   ...rangeFunPairs
 ) {
+  const windowSize = useWindowSize();
   const processedRangeFunPairs = preprocessRangeFun(rangeFunPairs);
   const getRange = (index) =>
-    processedRangeFunPairs[index] && processedRangeFunPairs[index][0];
+    viewportRangeToPixels(
+      window,
+      processedRangeFunPairs[index] && processedRangeFunPairs[index][0]
+    );
   const getFun = (index) =>
     processedRangeFunPairs[index] && processedRangeFunPairs[index][1];
 
@@ -136,12 +140,12 @@ export function useWindowSize() {
 
 /**
  *
- * 90vw => 0.9 * vw, otherwise return the original value
+ * 200 => 200, "90vw" => 0.9 * vw, otherwise return 0
  *
  * @param windowSize
  * @param value
  */
-function viewportValueToPixel(windowSize, value: string | number) {
+function viewportValueToPixels(windowSize, value: string | number) {
   const { width: vw, height: vh } = windowSize;
   if (typeof value === "string") {
     const pattern = /^(\d+)(vw|vh)$/;
@@ -152,11 +156,11 @@ function viewportValueToPixel(windowSize, value: string | number) {
       );
     }
   }
-  return value;
+  return typeof value === "number" ? value : 0;
 }
 
-function viewportRangeToPixel(windowSize, range: Range) {
-  return range.map((v) => viewportValueToPixel(windowSize, v));
+function viewportRangeToPixels(windowSize, range: Range) {
+  return range.map((v) => viewportValueToPixels(windowSize, v));
 }
 
 /**
@@ -164,8 +168,21 @@ function viewportRangeToPixel(windowSize, range: Range) {
  * @param ranges
  *
  * E.g. [100, '90vw'], ['100vh', 80] ==> [100, 0.9*vw], [vh, 80]
+ *
  */
 export function useViewportRanges(...ranges: Range[]) {
   const size = useWindowSize();
-  return ranges.map((range) => viewportRangeToPixel(size, range));
+  return ranges.map((range) => viewportRangeToPixels(size, range));
+}
+
+/**
+ *
+ * @param range
+ *
+ * Usage:
+ *
+ *  const opacity = useTransform(useViewportRange(['100vh', '120vh'])), [0, 1])
+ */
+export function useViewportRange(range: Range) {
+  return useViewportRanges(range)[0];
 }
