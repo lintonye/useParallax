@@ -70,10 +70,8 @@ export function useParallax(
   const windowSize = useWindowSize();
   const processedRangeFunPairs = preprocessRangeFun(rangeFunPairs);
   const getRange = (index) =>
-    specialValueRangeToPixels(
-      windowSize,
-      processedRangeFunPairs[index] && processedRangeFunPairs[index][0]
-    );
+    processedRangeFunPairs[index] &&
+    specialValueRangeToPixels(windowSize, processedRangeFunPairs[index][0]);
   const getFun = (index) =>
     processedRangeFunPairs[index] && processedRangeFunPairs[index][1];
 
